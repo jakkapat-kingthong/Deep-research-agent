@@ -1,0 +1,47 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+.eggs/
+
+# Virtual environments
+.venv
+venv/
+env/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Caches
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+.hypothesis/
+.cache/
+*.log
+
+# Coverage
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+
+# Distribution / packaging
+*.tar.gz
+*.whl
+MANIFEST
+
+# macOS
+.DS_Store
+
+# JetBrains IDEs
+.idea/
