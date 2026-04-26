@@ -735,7 +735,7 @@ eval = [
 requires-dist = [
     { name = "anthropic", specifier = ">=0.40.0" },
     { name = "deepeval", marker = "extra == 'eval'", specifier = ">=1.5.0" },
-    { name = "duckduckgo-search", specifier = ">=6.3.0" },
+    { name = "duckduckgo-search", specifier = "==6.3.0" },
     { name = "fastapi", specifier = ">=0.115.0" },
     { name = "fastmcp", specifier = ">=0.2.0" },
     { name = "google-genai", specifier = ">=0.3.0" },
@@ -851,16 +851,15 @@ wheels = [
 
 [[package]]
 name = "duckduckgo-search"
-version = "8.1.1"
+version = "6.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
-    { name = "lxml" },
     { name = "primp" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/10/ef/07791a05751e6cc9de1dd49fb12730259ee109b18e6d097e25e6c32d5617/duckduckgo_search-8.1.1.tar.gz", hash = "sha256:9da91c9eb26a17e016ea1da26235d40404b46b0565ea86d75a9f78cc9441f935", size = 22868, upload-time = "2025-07-06T15:30:59.73Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/da/e8/575e4d1879e49ee52438f8435b663b391c3a7a6e7383133ddcdb0e519da7/duckduckgo_search-6.3.0.tar.gz", hash = "sha256:e9f56955569325a7d9cacda2488ca78bf6629a459e74415892bee560b664f5eb", size = 33045, upload-time = "2024-10-07T09:56:38.955Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/db/72/c027b3b488b1010cf71670032fcf7e681d44b81829d484bb04e31a949a8d/duckduckgo_search-8.1.1-py3-none-any.whl", hash = "sha256:f48adbb06626ee05918f7e0cef3a45639e9939805c4fc179e68c48a12f1b5062", size = 18932, upload-time = "2025-07-06T15:30:58.339Z" },
+    { url = "https://files.pythonhosted.org/packages/5b/14/8a1c9a31046dd5b35c69e348ccdeb1c9a533294a2372abf958c0a9d30c37/duckduckgo_search-6.3.0-py3-none-any.whl", hash = "sha256:9a231a7b325226811cf7d35a240f3f501e718ae10a1aa0a638cabc80e129dfe7", size = 27455, upload-time = "2024-10-07T09:56:37.302Z" },
 ]
 
 [[package]]
