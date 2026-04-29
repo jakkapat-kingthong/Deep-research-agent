@@ -1,30 +1,33 @@
-"""Planner node: decompose query into sub-questions."""
+"""Planner node: decompose user query into sub-questions."""
 
 from __future__ import annotations
 
 from loguru import logger
+from pydantic import BaseModel, Field
 
-from deep_research.llm.gemini_llm import GeminiLLM
-from deep_research.schemas import PlannerOutput
+from deep_research.llm.groq_llm import GroqLLM
+from deep_research.schemas import SubQuestion
 from deep_research.state import ResearchState
 
-PLANNER_SYSTEM = """You are a research planner. Given a complex question,
-decompose it into 2-5 distinct, non-overlapping sub-questions that together
-fully cover the original question.
+PLANNER_SYSTEM = """You are a research planning assistant. Your goal is to take a 
+complex research question and decompose it into 3-5 distinct, non-overlapping 
+sub-questions that can be answered by searching the web.
 
-Rules:
-- Each sub-question must be independently searchable on the web.
-- Avoid redundancy — no two sub-questions should seek the same information.
-- Favor specificity: include entities, timeframes, and metrics where relevant.
-- Output MUST match the provided JSON schema."""
+Each sub-question should be specific enough to result in high-quality search 
+results but broad enough to cover a significant part of the original query."""
+
+
+class PlannerOutput(BaseModel):
+    sub_questions: list[SubQuestion] = Field(min_length=1, max_length=5)
 
 
 async def planner_node(state: ResearchState) -> ResearchState:
-    """Decompose `state.query` into sub-questions."""
+    """Decompose query into sub-questions using Groq Llama 3."""
     query = state["query"]
     logger.info(f"Planner: decomposing query: {query!r}")
 
-    llm = GeminiLLM()
+    # เรียกใช้ Groq Llama 3 70b เพื่อการวางแผนที่ฉลาดที่สุด
+    llm = GroqLLM(model="llama-3.3-70b-versatile")
     user_msg = f"Research question:\n{query}\n\nDecompose into sub-questions."
 
     output, tokens_in, tokens_out = await llm.structured_complete(
@@ -37,9 +40,8 @@ async def planner_node(state: ResearchState) -> ResearchState:
     for i, sq in enumerate(output.sub_questions, 1):
         logger.info(f"  {i}. {sq.text}")
 
-    # Approx cost: Gemini 1.5 Pro (Prompts > 128k) = $1.25/MTok in, $5.00/MTok out
-    # For smaller prompts it's even cheaper, but we'll use the standard rate
-    cost = (tokens_in * 1.25 + tokens_out * 5.00) / 1_000_000
+    # คำนวณราคาจำลอง (อัตรา Groq)
+    cost = (tokens_in * 0.05 + tokens_out * 0.10) / 1_000_000
 
     return {
         "sub_questions": output.sub_questions,

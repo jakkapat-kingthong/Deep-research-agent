@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     # API keys
     ANTHROPIC_API_KEY: SecretStr
     GOOGLE_API_KEY: SecretStr
+    GROQ_API_KEY: SecretStr
     TAVILY_API_KEY: SecretStr
 
     # Logging
