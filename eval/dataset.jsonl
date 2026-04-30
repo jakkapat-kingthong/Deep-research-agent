@@ -1,0 +1,20 @@
+{"id": "001", "query": "What is Model Context Protocol (MCP) and who created it?", "expected_keywords": ["Anthropic", "open standard", "AI models", "tools"], "min_claims": 3}
+{"id": "002", "query": "Compare LangGraph and CrewAI for production AI agents", "expected_keywords": ["state", "orchestration", "multi-agent"], "min_claims": 4}
+{"id": "003", "query": "What are the main causes of hallucination in large language models?", "expected_keywords": ["training data", "retrieval", "grounding"], "min_claims": 3}
+{"id": "004", "query": "How does retrieval-augmented generation improve LLM accuracy?", "expected_keywords": ["retrieval", "context", "vector", "embedding"], "min_claims": 3}
+{"id": "005", "query": "What recent advances have been made in quantized LLM inference on edge devices?", "expected_keywords": ["quantization", "edge", "INT4", "GGUF"], "min_claims": 3}
+{"id": "006", "query": "What are the differences between Qwen2.5-VL and Moondream2 for vision tasks?", "expected_keywords": ["parameters", "VLM", "edge"], "min_claims": 3}
+{"id": "007", "query": "How do ATS systems filter technical resumes in 2026?", "expected_keywords": ["keyword", "format", "skills"], "min_claims": 3}
+{"id": "008", "query": "What are the key findings of the latest YOLO object detection papers?", "expected_keywords": ["detection", "mAP", "architecture"], "min_claims": 3}
+{"id": "009", "query": "Explain the difference between tool use and MCP in agent systems", "expected_keywords": ["protocol", "tool", "function-calling"], "min_claims": 3}
+{"id": "010", "query": "What are the best practices for serving ONNX models with FastAPI?", "expected_keywords": ["ONNX Runtime", "async", "inference"], "min_claims": 3}
+{"id": "011", "query": "How has GSoC program evolved in handling AI contributions in 2026?", "expected_keywords": ["mentor", "contribution", "open source"], "min_claims": 3}
+{"id": "012", "query": "What are the key regulatory frameworks affecting AI deployment in Thailand and ASEAN?", "expected_keywords": ["PDPA", "regulation", "governance"], "min_claims": 3}
+{"id": "013", "query": "Compare pytest-asyncio and trio for async Python testing", "expected_keywords": ["fixture", "async", "event loop"], "min_claims": 3}
+{"id": "014", "query": "What are the top benchmarks for evaluating RAG systems in 2026?", "expected_keywords": ["RAGAS", "faithfulness", "context precision"], "min_claims": 3}
+{"id": "015", "query": "How do modern web search APIs (Tavily, Serper, Perplexity) differ?", "expected_keywords": ["search", "API", "results"], "min_claims": 3}
+{"id": "016", "query": "What are typical latency numbers for Claude Sonnet 4.5 in streaming mode?", "expected_keywords": ["token", "latency", "streaming"], "min_claims": 2}
+{"id": "017", "query": "How has Anthropic Claude improved at tool use compared to 2024?", "expected_keywords": ["tool", "function", "accuracy"], "min_claims": 3}
+{"id": "018", "query": "What are the key features of pydantic v2 that improve on v1?", "expected_keywords": ["performance", "validation", "Rust"], "min_claims": 3}
+{"id": "019", "query": "How do graph databases support fraud detection in fintech?", "expected_keywords": ["graph", "relationship", "pattern"], "min_claims": 3}
+{"id": "020", "query": "What are the pros and cons of using uv vs poetry for Python dependency management?", "expected_keywords": ["speed", "dependency", "lockfile"], "min_claims": 3}
