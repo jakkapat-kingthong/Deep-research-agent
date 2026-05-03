@@ -9,6 +9,8 @@ from loguru import logger
 from pydantic import BaseModel, Field
 from tavily import AsyncTavilyClient
 
+from deep_research.config import settings
+
 
 class SearchResult(BaseModel):
     """Single search result with provenance."""
@@ -24,9 +26,7 @@ class SearchTool:
     """Web search with Tavily primary + DDG fallback."""
 
     def __init__(self) -> None:
-        self._tavily = AsyncTavilyClient(
-            api_key="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"
-        )
+        self._tavily = AsyncTavilyClient(api_key=settings.TAVILY_API_KEY.get_secret_value())
 
     async def search(self, query: str, max_results: int = 5) -> list[SearchResult]:
         """Search web, return top results. Falls back to DDG on Tavily failure."""

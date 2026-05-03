@@ -1,11 +1,13 @@
+from __future__ import annotations
+
 from loguru import logger
 
 from deep_research.config import settings
-from deep_research.logging_config import setup_logging
+from deep_research.logging_config import configure_logging
 
 
 def main() -> None:
-    setup_logging(settings.LOG_LEVEL)
+    configure_logging()
     logger.info("Deep Research Agent starting up")
     logger.info("Planner model: {}", settings.PLANNER_MODEL)
     logger.info("Max sub-questions: {}", settings.MAX_SUBQUESTIONS)

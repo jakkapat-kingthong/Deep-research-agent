@@ -21,10 +21,11 @@ async def main() -> None:
     # Load dataset
     dataset_path = Path(__file__).parent / "dataset.jsonl"
     cases: list[EvalCase] = []
-    with dataset_path.open() as f:
-        for line in f:
-            data = json.loads(line)
-            cases.append(EvalCase(**data))
+    loop = asyncio.get_event_loop()
+    raw = await loop.run_in_executor(None, dataset_path.read_text)
+    for line in raw.splitlines():
+        if line.strip():
+            cases.append(EvalCase(**json.loads(line)))
 
     logger.info(f"Loaded {len(cases)} eval cases")
 
@@ -37,8 +38,8 @@ async def main() -> None:
 
     # Write JSON report
     report_path = Path(__file__).parent / "latest_report.json"
-    with report_path.open("w") as f:
-        json.dump([r.__dict__ for r in results], f, indent=2, default=str)
+    payload = json.dumps([r.__dict__ for r in results], indent=2, default=str)
+    await loop.run_in_executor(None, report_path.write_text, payload)
 
     # Print summary table
     table = Table(title="Deep Research Agent — Eval Results")
