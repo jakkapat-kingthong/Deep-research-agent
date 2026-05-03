@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import asyncio
 from typing import TypeVar
 
+import groq
 from groq import AsyncGroq
 from loguru import logger
 from pydantic import BaseModel
@@ -46,22 +48,35 @@ class GroqLLM:
 
         messages = [{"role": "system", "content": system}, {"role": "user", "content": user}]
 
-        resp = await self._client.chat.completions.create(
-            model=self._model,
-            messages=messages,
-            tools=tools,
-            tool_choice={"type": "function", "function": {"name": "submit_response"}},
-            max_tokens=max_tokens,
-            temperature=0.2,
-        )
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                resp = await self._client.chat.completions.create(
+                    model=self._model,
+                    messages=messages,
+                    tools=tools,
+                    tool_choice={"type": "function", "function": {"name": "submit_response"}},
+                    max_tokens=max_tokens,
+                    temperature=0.2,
+                )
 
-        tool_call = resp.choices[0].message.tool_calls[0]
-        parsed = response_model.model_validate_json(tool_call.function.arguments)
+                tool_call = resp.choices[0].message.tool_calls[0]
+                parsed = response_model.model_validate_json(tool_call.function.arguments)
 
-        tokens_in = resp.usage.prompt_tokens
-        tokens_out = resp.usage.completion_tokens
+                tokens_in = resp.usage.prompt_tokens
+                tokens_out = resp.usage.completion_tokens
 
-        logger.debug(
-            f"Groq call: model={self._model} tokens_in={tokens_in} tokens_out={tokens_out}"
-        )
-        return parsed, tokens_in, tokens_out
+                logger.debug(
+                    f"Groq call: model={self._model} tokens_in={tokens_in} tokens_out={tokens_out}"
+                )
+                return parsed, tokens_in, tokens_out
+
+            except groq.BadRequestError as exc:
+                if attempt < max_retries - 1:
+                    delay = 2**attempt  # 1s, 2s, 4s
+                    logger.warning(
+                        f"Groq format error (attempt {attempt + 1}/{max_retries}), retrying in {delay}s: {exc}"
+                    )
+                    await asyncio.sleep(delay)
+                else:
+                    raise
