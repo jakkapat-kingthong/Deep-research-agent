@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from typing import AsyncGenerator
+from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException
 from loguru import logger
@@ -51,12 +52,13 @@ async def research_stream(req: ResearchRequest) -> EventSourceResponse:
     """Stream research progress via SSE (Server-Sent Events)."""
     graph = get_graph()
 
+    thread_id = str(uuid4())
+
     async def event_generator() -> AsyncGenerator[dict, None]:
         try:
             async for event in graph.astream(
                 {"query": req.query, "budget_usd": req.budget_usd},
-                # ใช้ thread_id แยกสำหรับการเรียกผ่าน API
-                config={"configurable": {"thread_id": "api-streaming-session"}},
+                config={"configurable": {"thread_id": thread_id}},
                 stream_mode="updates",
             ):
                 for node_name, node_output in event.items():
@@ -85,7 +87,7 @@ async def research_sync(req: ResearchRequest) -> dict:
     try:
         result = await graph.ainvoke(
             {"query": req.query, "budget_usd": req.budget_usd},
-            config={"configurable": {"thread_id": "api-sync-session"}},
+            config={"configurable": {"thread_id": str(uuid4())}},
         )
         return _jsonify(result)
     except Exception as exc:

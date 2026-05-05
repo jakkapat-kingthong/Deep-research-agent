@@ -54,16 +54,20 @@ class SearchTool:
         ]
 
     async def _ddg_search(self, query: str, max_results: int) -> list[SearchResult]:
-        async with AsyncDDGS() as ddgs:
-            results = []
-            responses = await ddgs.atext(query, max_results=max_results)
-            for r in responses:
-                results.append(
-                    SearchResult(
-                        title=r.get("title", ""),
-                        url=r["href"],
-                        snippet=r.get("body", ""),
-                        source="duckduckgo",
+        try:
+            async with AsyncDDGS() as ddgs:
+                results = []
+                responses = await ddgs.atext(query, max_results=max_results)
+                for r in responses:
+                    results.append(
+                        SearchResult(
+                            title=r.get("title", ""),
+                            url=r["href"],
+                            snippet=r.get("body", ""),
+                            source="duckduckgo",
+                        )
                     )
-                )
-            return results
+                return results
+        except Exception as exc:
+            logger.warning(f"DuckDuckGo fallback also failed, returning empty results: {exc}")
+            return []

@@ -21,7 +21,7 @@ async def main() -> None:
     # Load dataset
     dataset_path = Path(__file__).parent / "dataset.jsonl"
     cases: list[EvalCase] = []
-    loop = asyncio.get_event_loop()
+    loop = asyncio.get_running_loop()
     raw = await loop.run_in_executor(None, dataset_path.read_text)
     for line in raw.splitlines():
         if line.strip():

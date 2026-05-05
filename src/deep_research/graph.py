@@ -5,7 +5,7 @@ from __future__ import annotations
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, START, StateGraph
 
-from deep_research.nodes.critic import critic_node
+from deep_research.nodes.critic import MAX_ITERATIONS, critic_node
 from deep_research.nodes.planner import planner_node
 from deep_research.nodes.searcher import searcher_node
 from deep_research.nodes.synthesizer import synthesizer_node
@@ -16,7 +16,7 @@ def _route_after_critic(state: ResearchState) -> str:
     """Route to searcher for another iteration, or END."""
     feedback = state.get("critic_feedback", "done")
     iteration = state.get("iteration", 0)
-    if feedback not in ("done", "max_iterations") and iteration < 2:
+    if feedback not in ("done", "max_iterations") and iteration < MAX_ITERATIONS:
         return "searcher"
     return END
 

@@ -71,11 +71,16 @@ class GroqLLM:
                 )
                 return parsed, tokens_in, tokens_out
 
-            except groq.BadRequestError as exc:
+            except (
+                groq.BadRequestError,
+                groq.RateLimitError,
+                groq.APIConnectionError,
+                groq.APITimeoutError,
+            ) as exc:
                 if attempt < max_retries - 1:
                     delay = 2**attempt  # 1s, 2s, 4s
                     logger.warning(
-                        f"Groq format error (attempt {attempt + 1}/{max_retries}), retrying in {delay}s: {exc}"
+                        f"Groq transient error (attempt {attempt + 1}/{max_retries}), retrying in {delay}s: {exc}"
                     )
                     await asyncio.sleep(delay)
                 else:

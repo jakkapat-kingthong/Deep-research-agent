@@ -3,10 +3,9 @@
 from __future__ import annotations
 
 from loguru import logger
-from pydantic import BaseModel, Field
 
 from deep_research.llm.groq_llm import GroqLLM
-from deep_research.schemas import SubQuestion
+from deep_research.schemas import PlannerOutput
 from deep_research.state import ResearchState
 
 PLANNER_SYSTEM = """You are a research planning assistant. Your goal is to take a 
@@ -15,10 +14,6 @@ sub-questions that can be answered by searching the web.
 
 Each sub-question should be specific enough to result in high-quality search 
 results but broad enough to cover a significant part of the original query."""
-
-
-class PlannerOutput(BaseModel):
-    sub_questions: list[SubQuestion] = Field(min_length=1, max_length=5)
 
 
 async def planner_node(state: ResearchState) -> ResearchState:

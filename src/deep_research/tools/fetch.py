@@ -3,15 +3,12 @@
 from __future__ import annotations
 
 import asyncio
-from typing import TYPE_CHECKING
+import json
 
 import httpx
 import trafilatura
 from loguru import logger
 from pydantic import BaseModel, Field
-
-if TYPE_CHECKING:
-    pass
 
 
 class FetchedArticle(BaseModel):
@@ -69,8 +66,6 @@ class FetchTool:
         )
         if not extracted:
             return None
-
-        import json
 
         meta = json.loads(extracted)
         text = meta.get("text", "") or ""

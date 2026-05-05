@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from uuid import uuid4
+
 from fastmcp import FastMCP
 from loguru import logger
 
@@ -31,7 +33,7 @@ async def research(query: str, budget_usd: float = 0.30) -> dict:
     graph = get_graph()
     result = await graph.ainvoke(
         {"query": query, "budget_usd": budget_usd},
-        config={"configurable": {"thread_id": "mcp-session"}},
+        config={"configurable": {"thread_id": str(uuid4())}},
     )
     return {
         "summary": result.get("summary", ""),
